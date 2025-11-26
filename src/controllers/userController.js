@@ -65,7 +65,9 @@ const registerUser = async (req, res) => {
             phoneNumber,
             address,
             gender,
-            role
+            role,
+            company,
+            license
         } = req.body;
     
         //Check if user already exists
@@ -94,7 +96,9 @@ const registerUser = async (req, res) => {
             dateOfBirth: dateOfBirth,
             phoneNumber: phoneNumber,
             address: address,
-            role: role || 'buyer'
+            role: role || 'buyer',
+            company: company,
+            license: license
         });
         const sanitizedUser = userUtils.sanitizeUser(user);
     

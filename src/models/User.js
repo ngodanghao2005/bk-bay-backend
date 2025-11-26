@@ -132,8 +132,8 @@ const createUser = async (user) => {
         else if (roleLower === 'shipper') { 
             const shipperRequest = new sql.Request(transaction);
             shipperRequest.input('userId', sql.VarChar, userId);
-            shipperRequest.input('LicensePlate', sql.VarChar, user.licensePlate || '');
-            shipperRequest.input('Company', sql.VarChar, user.Company || '');
+            shipperRequest.input('LicensePlate', sql.VarChar, user.license || '');
+            shipperRequest.input('Company', sql.VarChar, user.company || '');
             await shipperRequest.query(`INSERT INTO Shipper (Id, LicensePlate, Company) VALUES (@userId, @LicensePlate, @Company)`);
         }
 
