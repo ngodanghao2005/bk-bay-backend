@@ -50,6 +50,13 @@ async function checkRole(userId) {
     return result.recordset[0]?.Role || 'unknown';
 }
 
+const getUserPhoneNumber = async (userId) => {
+    const request = pool.request();
+    request.input('userId', userId);
+    const result = await request.query('SELECT PhoneNumber FROM UserPhoneNumber WHERE UserId = @userId');
+    return result.recordset[0]?.PhoneNumber || null;
+}
+
 const createUser = async (user) => {
     // 1. Create a transaction using the existing pool
     const transaction = new sql.Transaction(pool);
@@ -125,8 +132,8 @@ const createUser = async (user) => {
         else if (roleLower === 'shipper') { 
             const shipperRequest = new sql.Request(transaction);
             shipperRequest.input('userId', sql.VarChar, userId);
-            shipperRequest.input('LicensePlate', sql.VarChar, user.licensePlate || '');
-            shipperRequest.input('Company', sql.VarChar, user.Company || '');
+            shipperRequest.input('LicensePlate', sql.VarChar, user.license || '');
+            shipperRequest.input('Company', sql.VarChar, user.company || '');
             await shipperRequest.query(`INSERT INTO Shipper (Id, LicensePlate, Company) VALUES (@userId, @LicensePlate, @Company)`);
         }
 
@@ -160,6 +167,7 @@ module.exports = {
     getUserByUsername,
     getUserById,
     comparePassword,
+    getUserPhoneNumber,
     checkRole,
     createUser
 };
